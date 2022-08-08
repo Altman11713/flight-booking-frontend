@@ -1,0 +1,249 @@
+<h1><strong>Search affordable priced flights!</strong></h1>
+<mat-divider></mat-divider>
+<form #myForm="ngForm" class="flight-form mt-3">
+  <div>
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Starting location:</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="startingLocationFormControl"
+        placeholder="Ex. PAR for Paris"
+        name="fromLocation"
+        maxlength="3"
+        [(ngModel)]="fromLocation"
+        (ngModelChange)="fromLocation = $event.toUpperCase()"
+        required
+      />
+      <button
+        *ngIf="fromLocation"
+        matSuffix
+        mat-icon-button
+        (click)="fromLocation = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          startingLocationFormControl.hasError('maxlength') &&
+          !startingLocationFormControl.hasError('required')
+        "
+      >
+        Please enter a valid starting location code
+      </mat-error>
+      <mat-error *ngIf="startingLocationFormControl.hasError('required')">
+        Starting location <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+    <a
+      mat-raised-button
+      href="https://www.iata.org/en/publications/directories/code-search/"
+      target="_blank"
+      matTooltip="Destinations are using the IATA codes format, click here to be redirected to the IATA website."
+      matTooltipClass="iata-tooltip-color"
+      aria-label="Button that links to IATA codes website"
+      matTooltipPosition="right"
+      class="mt-1"
+      >IATA info</a
+    >
+  </div>
+
+  <div class="mt-3">
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Destination location:</mat-label>
+      <input
+        type="text"
+        matInput
+        [formControl]="destinationLocationFormControl"
+        placeholder="Ex. MAD for Madrid"
+        name="toLocation"
+        maxlength="3"
+        [(ngModel)]="toLocation"
+        (ngModelChange)="toLocation = $event.toUpperCase()"
+        required
+      />
+      <button
+        *ngIf="toLocation"
+        matSuffix
+        mat-icon-button
+        (click)="toLocation = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error
+        *ngIf="
+          destinationLocationFormControl.hasError('maxlength') &&
+          !destinationLocationFormControl.hasError('required')
+        "
+      >
+        Please enter a valid destination location code
+      </mat-error>
+      <mat-error *ngIf="destinationLocationFormControl.hasError('required')">
+        Destination location <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mt-3">
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Departure date:</mat-label>
+      <input
+        type="date"
+        matInput
+        [formControl]="departureDateFormControl"
+        placeholder="Ex. mm/dd/yyyy"
+        name="departureDate"
+        [(ngModel)]="departureDate"
+        required
+      />
+      <button
+        *ngIf="departureDate"
+        matSuffix
+        mat-icon-button
+        (click)="departureDate = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="departureDateFormControl.hasError('required')">
+        Departure date <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mt-3">
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Return date:</mat-label>
+      <input
+        type="date"
+        matInput
+        [formControl]="returnDateFormControl"
+        placeholder="Ex. mm/dd/yyyy"
+        name="returnDate"
+        [(ngModel)]="returnDate"
+        required
+      />
+      <button
+        *ngIf="returnDate"
+        matSuffix
+        mat-icon-button
+        (click)="returnDate = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="returnDateFormControl.hasError('required')">
+        Return date <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mt-3">
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Number of adults:</mat-label>
+      <input
+        type="number"
+        matInput
+        [formControl]="numberOfAdultsFormControl"
+        placeholder="Ex. 42"
+        name="nrOfAdults"
+        maxlength="3"
+        [(ngModel)]="nrOfAdults"
+        min="1"
+        required
+      />
+      <button
+        *ngIf="nrOfAdults"
+        matSuffix
+        mat-icon-button
+        (click)="nrOfAdults = 1"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="numberOfAdultsFormControl.hasError('required')">
+        Number of adults <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="mt-3">
+    <mat-form-field class="apply-full-width" appearance="fill">
+      <mat-label>Max number of flights:</mat-label>
+      <input
+        type="number"
+        matInput
+        [formControl]="maxNrOfFlightsFormControl"
+        placeholder="Ex. 42"
+        name="maxNrOfFlights"
+        [(ngModel)]="maxNrOfFlights"
+        min="1"
+        required
+      />
+      <button
+        *ngIf="maxNrOfFlights"
+        matSuffix
+        mat-icon-button
+        (click)="maxNrOfFlights = 1"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-error *ngIf="maxNrOfFlightsFormControl.hasError('required')">
+        Max number of flights <strong>required</strong>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button
+    type="submit"
+    mat-raised-button
+    color="primary"
+    (click)="onFindFlights()"
+    [ngStyle]="{ width: '100%' }"
+    [disabled]="buttonDisabledStatus()"
+  >
+    Search for flights
+  </button>
+
+  <mat-spinner *ngIf="loading" class="centered"> </mat-spinner>
+
+  <div *ngIf="flightsTotal" class="mt-3">
+    <mat-accordion class="flight-headers-align" multi>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Total Flight Offers </mat-panel-title>
+          <mat-panel-description>
+            List of global flight offers
+            <mat-icon>airplanemode_active</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-card
+          class="flight-card centered"
+          *ngFor="let flight of flightsTotal"
+        >
+          <mat-card-title>
+            <b>Price:</b> {{ flight.price.total }} ({{ flight.price.currency }})
+          </mat-card-title>
+          <mat-card-content>
+            Number of Seats Available: {{ flight.numberOfBookableSeats }}
+            <br />
+            Last Ticketing Date: {{ flight.lastTicketingDate }}
+            <mat-divider></mat-divider>
+            <h3 class="mt-2">Itineraries</h3>
+            <strong>Duration:</strong> {{ flight.itineraries[0].duration }}
+            <p *ngFor="let i of flight.itineraries[0].segments">
+              <strong>Departure:</strong> {{ i.departure.iataCode }}
+              <strong>at</strong> {{ i.departure.at }}
+              <em>(Terminal: {{ i.departure.terminal }})</em>
+              &nbsp;
+              <strong>Arrival:</strong> {{ i.arrival.iataCode }}
+              <strong>at</strong> {{ i.arrival.at }}
+              <em>(Terminal: {{ i.arrival.terminal }})</em>
+              &nbsp;
+              <strong>Number of stops:</strong> {{ i.numberOfStops }}
+            </p>
+            <mat-divider></mat-divider>
+          </mat-card-content>
+        </mat-card>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</form>
